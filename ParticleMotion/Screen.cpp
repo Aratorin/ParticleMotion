@@ -46,27 +46,12 @@ namespace Aratorin {
 		*/
 		buffer = new Uint32[SCREEN_WIDTH * SCREEN_HEIGHT];
 
+		//sets all bytes in buffer to 0, making the screen black
 		memset(buffer, 0x00, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
 
-
-		//sets all pixels to green
-		for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) {
-			buffer[i] = 0x00FF00FF;
-		}
-
-		//sets the 4 center pixels to red
-		int x = (SCREEN_WIDTH / 2) - 1, y = (SCREEN_HEIGHT / 2) * SCREEN_WIDTH;
-		buffer[x + y] = 0xFF0000FF;
-		buffer[x + y + 1] = 0xFF0000FF;
-		buffer[x + y + SCREEN_WIDTH] = 0xFF0000FF;
-		buffer[x + y + 1 + SCREEN_WIDTH] = 0xFF0000FF;
-
-		SDL_UpdateTexture(texture, NULL, buffer, SCREEN_WIDTH * sizeof(Uint32));
-		SDL_RenderClear(renderer);
-		SDL_RenderCopy(renderer, texture, NULL, NULL);
-		SDL_RenderPresent(renderer);
 		return true;
 	}
+
 	void Screen::close() {
 		delete[] buffer;
 		SDL_DestroyRenderer(renderer);
@@ -74,6 +59,8 @@ namespace Aratorin {
 		SDL_DestroyWindow(window);
 		SDL_Quit();
 	}
+
+	SDL_Event event;
 	bool Screen::processEvents() {
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
@@ -81,6 +68,24 @@ namespace Aratorin {
 			}
 		}
 		return true;
+	}
+
+	void Screen::setPixel(Uint32 x, Uint32 y, Uint8 red, Uint8 green, Uint8 blue) {
+		Uint32 color = red;
+		color <<= 8;
+		color += green;
+		color <<= 8;
+		color += blue;
+		color <<= 8;
+		color += 0xFF;
+		buffer[x + (y * SCREEN_WIDTH)] = color;
+	}
+
+	void Screen::update() {
+		SDL_UpdateTexture(texture, NULL, buffer, SCREEN_WIDTH * sizeof(Uint32));
+		SDL_RenderClear(renderer);
+		SDL_RenderCopy(renderer, texture, NULL, NULL);
+		SDL_RenderPresent(renderer);
 	}
 
 	Screen::~Screen() {}

@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ColorMixer.cpp" />
     <ClCompile Include="ParticleMotion.cpp" />
     <ClCompile Include="Screen.cpp" />
   </ItemGroup>
@@ -152,6 +153,7 @@
     <None Include="SDL2.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ColorMixer.h" />
     <ClInclude Include="Screen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,11 +1,12 @@
 #include <iostream>
 #include <SDL.h>
 #include "Screen.h"
+#include "ColorMixer.h"
+
 using namespace std;
 using namespace Aratorin;
 
 int main(int argc, char* argv[]) {
-
 
 	Screen screen;
 	if (screen.init() == false) {
@@ -19,19 +20,28 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-	//sets the 4 center pixels to red
-	int x = (Screen::SCREEN_WIDTH / 2) - 1, y = (Screen::SCREEN_HEIGHT / 2);
-	screen.setPixel(x, y, 0xFF, 0, 0);
-	screen.setPixel(x + 1, y++, 0xFF, 0, 0);
-	screen.setPixel(x, y, 0xFF, 0, 0);
-	screen.setPixel(x + 1, y, 0xFF, 0, 0);
+	unsigned char red = 0, green = 127, blue = 254;
 
 	screen.update();
+
+	ColorMixer mixer(red, green, blue, SINWAVE);
 
 	while (true) {
 		//Update particles
 		//Draw particles
 		//Check for messages/events
+		for (int y = 0; y < Screen::SCREEN_HEIGHT; y++) {
+			for (int x = 0; x < Screen::SCREEN_WIDTH; x++) {
+				screen.setPixel(x, y, red, green, blue);
+
+			}
+		}
+
+		mixer.cycleColors();
+
+		screen.update();
+
+
 		if (screen.processEvents() == false) {
 			break;
 		}

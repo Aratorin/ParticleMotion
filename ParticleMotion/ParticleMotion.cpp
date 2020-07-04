@@ -1,47 +1,46 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include <SDL.h>
 #include "Screen.h"
 #include "ColorMixer.h"
+#include "Swarm.h"
 
 using namespace std;
 using namespace Aratorin;
 
 int main(int argc, char* argv[]) {
 
+	srand(time(NULL));
+
 	Screen screen;
 	if (screen.init() == false) {
 		cout << "Error initializing SLD." << endl;
 	}
 
-	//sets all pixels to green
-	for (int y = 0; y < Screen::SCREEN_HEIGHT; y++) {
-		for (int x = 0; x < Screen::SCREEN_WIDTH; x++) {
-			screen.setPixel(x, y, 0, 0XFF, 0);
-		}
-	}
-
-	unsigned char red = 0, green = 127, blue = 254;
-
-	screen.update();
+	unsigned char red = 0, green = 0, blue = 0;
 
 	ColorMixer mixer(red, green, blue, SINWAVE);
 
+	Swarm swarm;
+
 	while (true) {
 		//Update particles
-		//Draw particles
-		//Check for messages/events
-		for (int y = 0; y < Screen::SCREEN_HEIGHT; y++) {
-			for (int x = 0; x < Screen::SCREEN_WIDTH; x++) {
-				screen.setPixel(x, y, red, green, blue);
-
-			}
-		}
-
+		const Particle* const particles = swarm.getParticles();
 		mixer.cycleColors();
 
+		//Draw particles
+		for (int i = 0; i < Swarm::NPARTICLES; i++) {
+			Particle particle = particles[i];
+			int x = (particle.x + 1) * Screen::SCREEN_WIDTH / 2;
+			int y = (particle.y + 1) * Screen::SCREEN_HEIGHT / 2;
+			screen.setPixel(x, y, red, green, blue);
+		}
+		
+		//Draw the screen
 		screen.update();
 
-
+		//Check for messages/events
 		if (screen.processEvents() == false) {
 			break;
 		}

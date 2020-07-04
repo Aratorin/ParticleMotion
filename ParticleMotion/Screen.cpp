@@ -71,6 +71,10 @@ namespace Aratorin {
 	}
 
 	void Screen::setPixel(Uint32 x, Uint32 y, Uint8 red, Uint8 green, Uint8 blue) {
+		if (x < 0 || x >= SCREEN_WIDTH || y < 0 || y >= SCREEN_HEIGHT) {
+			return;
+		}
+
 		Uint32 color = red;
 		color <<= 8;
 		color += green;

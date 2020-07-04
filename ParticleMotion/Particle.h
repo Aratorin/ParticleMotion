@@ -9,6 +9,10 @@ namespace Aratorin {
 	public:
 		Particle();
 		~Particle();
+		void update();
+
+	private:
+		double xspeed, yspeed;
 	};
 
 }

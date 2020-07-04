@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 
 	Screen screen;
 	if (screen.init() == false) {
-		cout << "Error initializing SLD." << endl;
+		cout << "Error initializing SDL." << endl;
 	}
 
 	unsigned char red = 0, green = 0, blue = 0;
@@ -26,8 +26,10 @@ int main(int argc, char* argv[]) {
 
 	while (true) {
 		//Update particles
-		const Particle* const particles = swarm.getParticles();
+		swarm.update();
+		screen.clear();
 		mixer.cycleColors();
+		const Particle* const particles = swarm.getParticles();
 
 		//Draw particles
 		for (int i = 0; i < Swarm::NPARTICLES; i++) {
@@ -36,7 +38,7 @@ int main(int argc, char* argv[]) {
 			int y = (particle.y + 1) * Screen::SCREEN_HEIGHT / 2;
 			screen.setPixel(x, y, red, green, blue);
 		}
-		
+
 		//Draw the screen
 		screen.update();
 

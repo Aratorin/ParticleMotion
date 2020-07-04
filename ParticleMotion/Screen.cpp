@@ -47,7 +47,8 @@ namespace Aratorin {
 		buffer = new Uint32[SCREEN_WIDTH * SCREEN_HEIGHT];
 
 		//sets all bytes in buffer to 0, making the screen black
-		memset(buffer, 0x00, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
+		//memset(buffer, 0x00, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
+		clear();
 
 		return true;
 	}
@@ -90,6 +91,11 @@ namespace Aratorin {
 		SDL_RenderClear(renderer);
 		SDL_RenderCopy(renderer, texture, NULL, NULL);
 		SDL_RenderPresent(renderer);
+	}
+
+	void Screen::clear() {
+		//sets all bytes in buffer to 0, making the screen black
+		memset(buffer, 0x00, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
 	}
 
 	Screen::~Screen() {}

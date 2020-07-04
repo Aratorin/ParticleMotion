@@ -23,6 +23,7 @@ namespace Aratorin {
 		bool processEvents();
 		void setPixel(Uint32 x, Uint32 y, Uint8 red, Uint8 green, Uint8 blue);
 		void update();
+		void clear();
 		~Screen();
 	};
 

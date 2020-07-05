@@ -6,12 +6,12 @@ namespace Aratorin {
 
 	Particle::Particle() :x(0), y(0) {
 		direction = (2 * M_PI * rand()) / RAND_MAX;
-		speed = (0.001 * rand() / RAND_MAX);
+		speed = (0.0001 * rand() / RAND_MAX);
 	}
 
 	Particle::Particle(const char* const mode) : x(0), y(0) {
 		direction = (2 * M_PI * rand()) / RAND_MAX;
-		speed = (0.001 * rand() / RAND_MAX);
+		speed = (0.0001 * rand() / RAND_MAX);
 
 		if (mode == PARTICLE_MODE_RANDOM) {
 			x = ((2.0 * rand() / RAND_MAX)) - 1;
@@ -37,9 +37,9 @@ namespace Aratorin {
 		}
 	}*/
 
-	void Particle::update() {
-		double xspeed = speed * cos(direction);
-		double yspeed = speed * sin(direction);
+	void Particle::update(int interval) {
+		double xspeed = speed * cos(direction) * interval;
+		double yspeed = speed * sin(direction) * interval;
 
 		x += xspeed;
 		y += yspeed;

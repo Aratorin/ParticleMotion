@@ -20,13 +20,13 @@ int main(int argc, char* argv[]) {
 
 	unsigned char red = 0, green = 0, blue = 0;
 
-	ColorMixer mixer(red, green, blue, SINWAVE);
-
 	Swarm swarm;
 
 	while (true) {
 		//Update particles
-		swarm.update();
+		int elapsed = SDL_GetTicks();
+		ColorMixer mixer(red, green, blue, SINWAVE, elapsed);
+		swarm.update(elapsed);
 		screen.clear();
 		mixer.cycleColors();
 		const Particle* const particles = swarm.getParticles();

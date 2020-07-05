@@ -13,7 +13,7 @@ namespace Aratorin {
 		Particle();
 		Particle(const char* const mode);
 		~Particle();
-		void update();
+		void update(int interval);
 
 	private:
 		double direction, speed;

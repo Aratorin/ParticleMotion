@@ -1,7 +1,7 @@
 #include "ColorMixer.h"
 namespace Aratorin {
 
-	ColorMixer::ColorMixer(unsigned char& red, unsigned char& green, unsigned char& blue, const int mode) :red(red), green(green), blue(blue), mode(mode), rpp(true), gpp(true), bpp(true), elapsed(0) {};
+	ColorMixer::ColorMixer(unsigned char& red, unsigned char& green, unsigned char& blue, const int mode, int seed) :red(red), green(green), blue(blue), mode(mode), rpp(true), gpp(true), bpp(true), seed(seed) {};
 
 	void ColorMixer::cycleColors() {
 		switch (mode) {
@@ -43,10 +43,9 @@ namespace Aratorin {
 	}
 
 	void ColorMixer::sinWave() {
-		elapsed = SDL_GetTicks();
-		red = (1 + sin(elapsed * 0.0002)) * 128;
-		green = (1 + sin(elapsed * 0.0001)) * 128;
-		blue = (1 + sin(elapsed * 0.0003)) * 128;
+		red = (1 + sin(seed * 0.0002)) * 128;
+		green = (1 + sin(seed * 0.0001)) * 128;
+		blue = (1 + sin(seed * 0.0003)) * 128;
 	}
 
 }

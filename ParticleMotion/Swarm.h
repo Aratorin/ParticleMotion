@@ -8,6 +8,7 @@ namespace Aratorin {
 
 	private:
 		Particle* const particles = new Particle[NPARTICLES];
+		int lastTime;
 
 	public:
 		Swarm();
@@ -15,7 +16,7 @@ namespace Aratorin {
 		const Particle* const getParticles() {
 			return particles;
 		}
-		void update();
+		void update(int elapsed);
 	};
 
 }

@@ -2,16 +2,20 @@
 
 namespace Aratorin {
 
-	Swarm::Swarm() {}
+	Swarm::Swarm() :lastTime(0) {}
 
 	Swarm::~Swarm() {
 		delete[] particles;
 	}
 
-	void Swarm::update() {
+	void Swarm::update(int elapsed) {
+		int interval = elapsed - lastTime;
+
 		for (int i = 0; i < Swarm::NPARTICLES; i++) {
-			particles[i].update();
+			particles[i].update(interval);
 		}
+
+		lastTime = elapsed;
 	}
-	
+
 }

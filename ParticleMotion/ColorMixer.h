@@ -12,10 +12,10 @@ namespace Aratorin {
 	private:
 		unsigned char& red, & green, & blue;
 		bool rpp, gpp, bpp;
-		int mode, elapsed;
+		int mode, seed;
 
 	public:
-		ColorMixer(unsigned char& red, unsigned char& green, unsigned char& blue, const int mode);
+		ColorMixer(unsigned char& red, unsigned char& green, unsigned char& blue, const int mode, int seed = 0);
 		void cycleColors();
 
 	private:

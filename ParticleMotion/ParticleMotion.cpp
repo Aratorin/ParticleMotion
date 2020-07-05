@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
 		for (int i = 0; i < Swarm::NPARTICLES; i++) {
 			Particle particle = particles[i];
 			int x = (particle.x + 1) * Screen::SCREEN_WIDTH / 2;
-			int y = (particle.y + 1) * Screen::SCREEN_HEIGHT / 2;
+			int y = (particle.y * Screen::SCREEN_WIDTH / 2) + (Screen::SCREEN_HEIGHT / 2);
 			screen.setPixel(x, y, red, green, blue);
 		}
 

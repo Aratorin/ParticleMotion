@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 	while (true) {
 		//Update particles
 		swarm.update();
-		screen.clear();
+		//screen.clear();
 		mixer.cycleColors();
 		const Particle* const particles = swarm.getParticles();
 

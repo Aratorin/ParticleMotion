@@ -4,7 +4,7 @@
 namespace Aratorin {
 	class Swarm {
 	public:
-		static const int NPARTICLES = 5000;
+		static const int NPARTICLES = 1000;
 
 	private:
 		Particle* const particles = new Particle[NPARTICLES];

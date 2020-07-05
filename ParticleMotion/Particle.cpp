@@ -4,12 +4,12 @@
 
 namespace Aratorin {
 
-	Particle::Particle() :x(0), y(0) {
+	Particle::Particle() :x(0), y(0), xforward(true), yforward(true) {
 		direction = (2 * M_PI * rand()) / RAND_MAX;
-		speed = (0.001 * rand() / RAND_MAX);
+		speed = (0.005 * rand() / RAND_MAX);
 	}
 
-	Particle::Particle(const char* const mode) : x(0), y(0) {
+	Particle::Particle(const char* const mode) : x(0), y(0), xforward(true), yforward(true) {
 		direction = (2 * M_PI * rand()) / RAND_MAX;
 		speed = (0.001 * rand() / RAND_MAX);
 
@@ -38,11 +38,39 @@ namespace Aratorin {
 	}*/
 
 	void Particle::update() {
-		double xspeed = speed * cos(direction);
-		double yspeed = speed * sin(direction);
+		if (xforward) {
+			double xspeed = speed * cos(direction);
+			x += xspeed;
+			
+			if (x <= -1.0 || x >= 1.0) {
+				xforward = !xforward;
+			}
+		} else {
+			double xspeed = speed * cos(direction);
+			xspeed = -xspeed;
+			x += xspeed;
 
-		x += xspeed;
-		y += yspeed;
+			if (x <= -1.0 || x >= 1.0) {
+				xforward = !xforward;
+			}
+		}
+
+		if (yforward) {
+			double yspeed = speed * sin(direction);
+			y += yspeed;
+
+			if (y <= -0.75 || y >= 0.75) {
+				yforward = !yforward;
+			}
+		} else {
+			double yspeed = speed * sin(direction);
+			yspeed = -yspeed;
+			y += yspeed;
+
+			if (y <= -0.75 || y >= 0.75) {
+				yforward = !yforward;
+			}
+		}
 	}
 
 }

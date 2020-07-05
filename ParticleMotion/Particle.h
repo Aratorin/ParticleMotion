@@ -17,6 +17,7 @@ namespace Aratorin {
 
 	private:
 		double direction, speed;
+		bool xforward, yforward;
 	};
 
 }

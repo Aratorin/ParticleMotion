@@ -2,7 +2,7 @@
 
 namespace Aratorin {
 
-	Screen::Screen() :window(NULL), renderer(NULL), texture(NULL), buffer(NULL) {}
+	Screen::Screen() :window(NULL), renderer(NULL), texture(NULL), buffer1(NULL), buffer2(NULL) {}
 
 	bool Screen::init() {
 		if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -44,7 +44,8 @@ namespace Aratorin {
 			((SCREEN_WIDTH / 2) - 1) + ((SCREEN_HEIGHT / 2) * SCREEN_WIDTH) + SCREEN_WIDTH //bottom left
 			(SCREEN_WIDTH / 2) + ((SCREEN_HEIGHT / 2) * SCREEN_WIDTH) + SCREEN_WIDTH //bottom right
 		*/
-		buffer = new Uint32[SCREEN_WIDTH * SCREEN_HEIGHT];
+		buffer1 = new Uint32[SCREEN_WIDTH * SCREEN_HEIGHT];
+		buffer2 = new Uint32[SCREEN_WIDTH * SCREEN_HEIGHT];
 
 		//sets all bytes in buffer to 0, making the screen black
 		//memset(buffer, 0x00, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
@@ -54,7 +55,8 @@ namespace Aratorin {
 	}
 
 	void Screen::close() {
-		delete[] buffer;
+		delete[] buffer1;
+		delete[] buffer2;
 		SDL_DestroyRenderer(renderer);
 		SDL_DestroyTexture(texture);
 		SDL_DestroyWindow(window);
@@ -83,11 +85,11 @@ namespace Aratorin {
 		color += blue;
 		color <<= 8;
 		color += 0xFF;
-		buffer[x + (y * SCREEN_WIDTH)] = color;
+		buffer1[x + (y * SCREEN_WIDTH)] = color;
 	}
 
 	void Screen::update() {
-		SDL_UpdateTexture(texture, NULL, buffer, SCREEN_WIDTH * sizeof(Uint32));
+		SDL_UpdateTexture(texture, NULL, buffer1, SCREEN_WIDTH * sizeof(Uint32));
 		SDL_RenderClear(renderer);
 		SDL_RenderCopy(renderer, texture, NULL, NULL);
 		SDL_RenderPresent(renderer);
@@ -95,7 +97,48 @@ namespace Aratorin {
 
 	void Screen::clear() {
 		//sets all bytes in buffer to 0, making the screen black
-		memset(buffer, 0x00, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
+		memset(buffer1, 0x00, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
+		memset(buffer2, 0x00, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
+	}
+
+	void Screen::boxBlur() {
+		swap(buffer1, buffer2);
+
+		for (int y = 0; y < SCREEN_HEIGHT; y++) {
+			for (int x = 0; x < SCREEN_WIDTH; x++) {
+
+				int redTotal = 0;
+				int greenTotal = 0;
+				int blueTotal = 0;
+
+				for (int row = -1; row <= 1; row++) {
+					for (int col = -1; col <= 1; col++) {
+						int currentX = x + col;
+						int currentY = y + row;
+
+						if (currentX < 0 || currentX >= SCREEN_WIDTH || currentY < 0 || currentY >= SCREEN_HEIGHT) {
+							continue;
+						}
+
+						Uint32 color = buffer2[currentX + (currentY * SCREEN_WIDTH)];
+						Uint32 red = color >> 24;
+						Uint32 green = (color & 0x00FF0000) >> 16;
+						Uint32 blue = (color & 0x0000FF00) >> 8;
+						redTotal += red;
+						greenTotal += green;
+						blueTotal += blue;
+
+					}
+				}
+
+				Uint8 red = redTotal / 9;
+				Uint8 green = greenTotal / 9;
+				Uint8 blue = blueTotal / 9;
+
+				setPixel(x, y, red, green, blue);
+			}
+
+		}
 	}
 
 	Screen::~Screen() {}

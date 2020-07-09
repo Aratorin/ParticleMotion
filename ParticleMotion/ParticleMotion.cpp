@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 		int elapsed = SDL_GetTicks();
 		ColorMixer mixer(red, green, blue, SINWAVE, elapsed);
 		swarm.update(elapsed);
-		screen.clear();
+		//screen.clear();
 		mixer.cycleColors();
 		const Particle* const particles = swarm.getParticles();
 
@@ -39,6 +39,7 @@ int main(int argc, char* argv[]) {
 			screen.setPixel(x, y, red, green, blue);
 		}
 
+		screen.boxBlur();
 		//Draw the screen
 		screen.update();
 

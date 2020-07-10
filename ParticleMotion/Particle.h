@@ -9,14 +9,17 @@ namespace Aratorin {
 	public:
 		double x, y;
 
+	private:
+		double direction, speed;
+		const char* const mode;
+
 	public:
-		Particle();
-		Particle(const char* const mode);
+		Particle(const char* const mode = PARTICLE_MODE_CENTERED);
 		~Particle();
 		void update(int interval);
 
 	private:
-		double direction, speed;
+		void init();
 	};
 
 }

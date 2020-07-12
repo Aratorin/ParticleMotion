@@ -5,9 +5,7 @@ using namespace std;
 
 namespace Aratorin {
 
-	enum class ColorMixerMode { INCREMENTAL, COSINWAVE, SINWAVE };
-	//const int SINWAVE = 0;
-	//const int INCREMENTAL = 1;
+	enum class ColorMixerMode { INCREMENTAL, COSWAVE, SINWAVE };
 
 	class ColorMixer {
 	private:
@@ -20,6 +18,7 @@ namespace Aratorin {
 
 	private:
 		void incremental();
+		void cosWave(int seed);
 		void sinWave(int seed);
 	};
 

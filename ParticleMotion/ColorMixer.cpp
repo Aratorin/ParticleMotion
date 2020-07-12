@@ -8,7 +8,8 @@ namespace Aratorin {
 		case ColorMixerMode::INCREMENTAL:
 			incremental();
 			break;
-		case ColorMixerMode::COSINWAVE:
+		case ColorMixerMode::COSWAVE:
+			cosWave(seed);
 			break;
 		case ColorMixerMode::SINWAVE:
 			sinWave(seed);
@@ -72,6 +73,12 @@ namespace Aratorin {
 				blue -= increment;
 			}
 		}
+	}
+
+	void ColorMixer::cosWave(int seed) {
+		red = (1 + cos(seed * 0.0002)) * 128;
+		green = (1 + cos(seed * 0.0001)) * 128;
+		blue = (1 + cos(seed * 0.0003)) * 128;
 	}
 
 	void ColorMixer::sinWave(int seed) {

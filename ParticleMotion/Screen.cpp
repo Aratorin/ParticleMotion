@@ -12,7 +12,7 @@ namespace Aratorin {
 		window = SDL_CreateWindow("Particle Motion", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
 		if (window == NULL) {
-			SDL_Quit;
+			SDL_Quit();
 			return false;
 		}
 
@@ -20,7 +20,7 @@ namespace Aratorin {
 
 		if (renderer == NULL) {
 			SDL_DestroyWindow(window);
-			SDL_Quit;
+			SDL_Quit();
 			return false;
 		}
 
@@ -29,7 +29,7 @@ namespace Aratorin {
 		if (texture == NULL) {
 			SDL_DestroyRenderer(renderer);
 			SDL_DestroyWindow(window);
-			SDL_Quit;
+			SDL_Quit();
 			return false;
 		}
 

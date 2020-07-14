@@ -4,17 +4,32 @@ namespace Aratorin {
 
 	Screen::Screen() :window(NULL), renderer(NULL), texture(NULL), buffer1(NULL), buffer2(NULL) {}
 
-	bool Screen::init() {
+	int Screen::SCREEN_WIDTH = 800;
+	int Screen::SCREEN_HEIGHT = 600;
+
+	bool Screen::init(SDL_WindowFlags flags) {
 		if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 			return false;
 		}
 
-		window = SDL_CreateWindow("Particle Motion", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		/*HD Mode*/
+		//SDL_DisplayMode md;
+		//SDL_GetDesktopDisplayMode(0, &md);
+		//SCREEN_WIDTH = md.w;
+		//SCREEN_HEIGHT = md.h;
+		//window = SDL_CreateWindow("Particle Motion", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH / 1.5, SCREEN_HEIGHT / 1.5, flags);
+
+		/*Original Mode*/
+		window = SDL_CreateWindow("Particle Motion", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, flags);
 
 		if (window == NULL) {
 			SDL_Quit();
 			return false;
 		}
+
+		//SDL_GetWindowSize(window, &SCREEN_WIDTH, &SCREEN_HEIGHT);
+		cout << "SCREEN_WIDTH: " << SCREEN_WIDTH << endl;
+		cout << "SCREEN_HEIGHT: " << SCREEN_HEIGHT << endl;
 
 		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 

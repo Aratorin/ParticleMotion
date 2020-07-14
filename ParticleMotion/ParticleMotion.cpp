@@ -23,12 +23,11 @@ int main(int argc, char* argv[]) {
 	/*The Screen class contains pointers to the SDL_Window, SDL_Renderer, 
 	  SDL_Texture, and buffer used to display pixels on the screen.*/
 	Screen screen;
-
 	/*screen.init() runs SDL_Init(SDL_INIT_VIDEO), and then creates the SDL_Window,
 	  SDL_Renderer, SDL_Texture, and buffer, returns true on success, and false if
 	  any portion fails. This is used in place of a constructor, as constructors are
 	  not able to return values. If screen.init() fails, the program returns 1 and exits.*/
-	if (!screen.init()) {
+	if (!screen.init(SDL_WindowFlags(SDL_WINDOW_RESIZABLE))) {
 		cout << "Error initializing SDL." << endl;
 		return 1;
 	}
@@ -70,7 +69,7 @@ int main(int argc, char* argv[]) {
 
 		/*Blurs the screen using a box blur. Applying blur at this point blurs the screen
 		  before drawing the new pixels, which results in sharper pixels, that look like 
-		  comets.*/
+		  comets. NOT RECOMMENDED FOR HD MODE*/
 		//screen.boxBlur();
 
 		/*Creates a const pointer to the array of particles in the swarm and treats them as

@@ -1,4 +1,5 @@
 #include "ColorMixer.h"
+
 namespace Aratorin {
 
 	ColorMixer::ColorMixer(unsigned char& red, unsigned char& green, unsigned char& blue) :red(red), green(green), blue(blue), rpp(true), gpp(true), bpp(true) {};

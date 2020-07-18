@@ -6,6 +6,7 @@ namespace Aratorin {
 
 	int Screen::SCREEN_WIDTH = 800;
 	int Screen::SCREEN_HEIGHT = 600;
+	double Screen::SCREEN_RATIO = 1.0 * Screen::SCREEN_HEIGHT / Screen::SCREEN_WIDTH;
 
 	bool Screen::init(SDL_WindowFlags flags) {
 		if (SDL_Init(SDL_INIT_VIDEO) < 0) {

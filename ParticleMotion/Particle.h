@@ -2,19 +2,24 @@
 
 namespace Aratorin {
 
-	const char* const PARTICLE_MODE_RANDOM = "RANDOM";
-	const char* const PARTICLE_MODE_CENTERED = "CENTERED";
+	enum class ParticleMode { CENTERED, RANDOM };
+	enum class ParticleOffScreenAction { BOUNCE, RESPAWN };
 
 	struct Particle {
 	public:
+		static ParticleMode PARTICLE_MODE;
+		static ParticleOffScreenAction PARTICLE_OFFSCREEN_ACTION;
+		static double YBOUNDS;
 		double x, y;
 
 	private:
 		double direction, speed;
-		const char* const mode;
+		ParticleMode mode;
+		ParticleOffScreenAction action;
+		bool xreverse, yreverse;
 
 	public:
-		Particle(const char* const mode = PARTICLE_MODE_CENTERED);
+		Particle(ParticleMode mode = PARTICLE_MODE, ParticleOffScreenAction action = PARTICLE_OFFSCREEN_ACTION);
 		~Particle();
 		void update(int interval);
 

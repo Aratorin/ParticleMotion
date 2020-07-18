@@ -9,6 +9,7 @@ namespace Aratorin {
 	public:
 		static int SCREEN_WIDTH;
 		static int SCREEN_HEIGHT;
+		static double SCREEN_RATIO;
 
 	private:
 		SDL_Window* window;

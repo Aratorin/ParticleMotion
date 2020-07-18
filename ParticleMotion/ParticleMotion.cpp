@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <SDL.h>
+#include <string>
 #include "Screen.h"
 #include "ColorMixer.h"
 #include "Swarm.h"
@@ -11,8 +12,18 @@ using namespace Aratorin;
 
 int main(int argc, char* argv[]) {
 	/*User input----------------------------------------------------------------------------------------------------------------------*/
-	cout << "Enter an integer between 0 and " << 50000 << " for the number of desired particles (recommended 5000): ";
-	cin >> Swarm::NPARTICLES;
+	string userchoice;
+	cout << "Enter 1 to customize settings, or just hit Enter to use default settings." << endl;
+	getline(cin, userchoice);
+
+	if (userchoice == "1") {
+
+		cout << "Enter an integer between 0 and " << 50000 << " for the number of desired particles (recommended 5000): ";
+		cin >> Swarm::NPARTICLES;
+
+	} else {
+		Swarm::NPARTICLES = 5000;
+	}
 
 	while (Swarm::NPARTICLES < 0 || Swarm::NPARTICLES > 50000) {
 		cout << Swarm::NPARTICLES << " is not between 0 and " << 50000 << "!" << endl;
@@ -40,6 +51,10 @@ int main(int argc, char* argv[]) {
 		cout << "Error initializing SDL." << endl;
 		return 1;
 	}
+
+	/*Sets the maximum and minimum values for particle.y This is necessary for determining
+	what the particles do when they get to the edge of the Screen.*/
+	Particle::YBOUNDS = Screen::SCREEN_RATIO;
 
 	/*Initial values for red, green, and blue, to be passed to the ColorMixer
 	  unsigned char type ensures that each value is between 0 and 255.*/

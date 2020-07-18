@@ -2,6 +2,8 @@
 
 namespace Aratorin {
 
+	int Swarm::NPARTICLES = 5000;// *1.35;
+
 	Swarm::Swarm() :lastTime(0) {}
 
 	Swarm::~Swarm() {
@@ -11,7 +13,7 @@ namespace Aratorin {
 	void Swarm::update(int elapsed) {
 		int interval = elapsed - lastTime;
 
-		for (int i = 0; i < Swarm::NPARTICLES; i++) {
+		for (int i = 0; i < NPARTICLES; i++) {
 			particles[i].update(interval);
 		}
 

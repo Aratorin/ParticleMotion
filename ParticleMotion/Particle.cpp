@@ -40,8 +40,6 @@ namespace Aratorin {
 	}
 
 	void Particle::update(int interval) {
-		direction += interval * .0003;
-
 		double xspeed;
 		double yspeed;
 
@@ -87,6 +85,8 @@ namespace Aratorin {
 
 			break;
 		case Aratorin::ParticleOffScreenAction::RESPAWN:
+			direction += interval * .0003;
+
 			xspeed = speed * cos(direction) * interval;
 			yspeed = speed * sin(direction) * interval;
 

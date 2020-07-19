@@ -10,25 +10,165 @@
 using namespace std;
 using namespace Aratorin;
 
+SDL_WindowFlags screenFlags = SDL_WINDOW_RESIZABLE;
+ColorMixerMode mixerMode = ColorMixerMode::SINWAVE;
+int transitionMethod = 3;
+
 int main(int argc, char* argv[]) {
 	/*User input----------------------------------------------------------------------------------------------------------------------*/
-	string userchoice;
 	cout << "Enter 1 to customize settings, or just hit Enter to use default settings." << endl;
+	string userchoice;
 	getline(cin, userchoice);
 
 	if (userchoice == "1") {
 
-		cout << "Enter an integer between 0 and " << 50000 << " for the number of desired particles (recommended 5000): ";
+		cout << endl;
+		cout << "Enter an integer between 0 and " << 50000 << " for the number of desired particles (recommended 5000)" << endl;
 		cin >> Swarm::NPARTICLES;
+		while (Swarm::NPARTICLES < 0 || Swarm::NPARTICLES > 50000) {
+			cout << Swarm::NPARTICLES << " is not between 0 and " << 50000 << "!" << endl;
+			cout << "Enter an integer between 0 and " << 50000 << " for the number of desired particles (recommended 5000)" << endl;
+			cin >> Swarm::NPARTICLES;
+		}
+		cin.ignore(INT_MAX, '\n');
 
-	} else {
-		Swarm::NPARTICLES = 5000;
-	}
+		cout << endl;
 
-	while (Swarm::NPARTICLES < 0 || Swarm::NPARTICLES > 50000) {
-		cout << Swarm::NPARTICLES << " is not between 0 and " << 50000 << "!" << endl;
-		cout << "Enter an integer between 0 and " << 50000 << " for the number of desired particles (recommended 5000): ";
-		cin >> Swarm::NPARTICLES;
+		cout << "Should the particles start in random positions, or at the center of the screen?" << endl;
+		cout << "1 = Center of the screen." << endl;
+		cout << "2 = Random Positions." << endl;
+		userchoice = "";
+		while (userchoice.empty()) {
+			getline(cin, userchoice);
+		}
+		while (userchoice != "1" && userchoice != "2") {
+			cout << userchoice << " is not a valid selection!" << endl;
+			cout << "1 = Center of the screen." << endl;
+			cout << "2 = Random Positions." << endl;
+			userchoice = "";
+			while (userchoice.empty()) {
+				getline(cin, userchoice);
+			}
+		}
+		if (userchoice == "1") {
+			Particle::PARTICLE_MODE = ParticleMode::CENTERED;
+		} else if (userchoice == "2") {
+			Particle::PARTICLE_MODE = ParticleMode::RANDOM;
+		}
+
+		cout << endl;
+
+		cout << "If a particle moves off the screen, should it bounce back, or respawn?" << endl;
+		cout << "1 = Bounce back." << endl;
+		cout << "2 = Respawn." << endl;
+		userchoice = "";
+		while (userchoice.empty()) {
+			getline(cin, userchoice);
+		}
+		while (userchoice != "1" && userchoice != "2") {
+			cout << userchoice << " is not a valid selection!" << endl;
+			cout << "1 = Bounce back." << endl;
+			cout << "2 = Respawn." << endl;
+			userchoice = "";
+			while (userchoice.empty()) {
+				getline(cin, userchoice);
+			}
+		}
+		if (userchoice == "1") {
+			Particle::PARTICLE_OFFSCREEN_ACTION = ParticleOffScreenAction::BOUNCE;
+		} else if (userchoice == "2") {
+			Particle::PARTICLE_OFFSCREEN_ACTION = ParticleOffScreenAction::RESPAWN;
+		}
+
+		cout << endl;
+
+		cout << "Fullscreen or Windowed?" << endl;
+		cout << "1 = Fullscreen" << endl;
+		cout << "2 = Windowed." << endl;
+		userchoice = "";
+		while (userchoice.empty()) {
+			getline(cin, userchoice);
+		}
+		while (userchoice != "1" && userchoice != "2") {
+			cout << userchoice << " is not a valid selection!" << endl;
+			cout << "1 = Fullscreen" << endl;
+			cout << "2 = Windowed." << endl;
+			userchoice = "";
+			while (userchoice.empty()) {
+				getline(cin, userchoice);
+			}
+		}
+
+		if (userchoice == "1") {
+			screenFlags = SDL_WINDOW_FULLSCREEN_DESKTOP;
+		} else if (userchoice == "2") {
+			screenFlags = SDL_WINDOW_RESIZABLE;
+		}
+
+		cout << endl;
+
+		cout << "What algorith should be used to mix the colors?" << endl;
+		cout << "1 = Cosine wave." << endl;
+		cout << "2 = Sine wave." << endl;
+		cout << "3 = Incremental." << endl;
+		userchoice = "";
+		while (userchoice.empty()) {
+			getline(cin, userchoice);
+		}
+		while (userchoice != "1" && userchoice != "2" && userchoice != "3") {
+			cout << userchoice << " is not a valid selection!" << endl;
+			cout << "1 = Cosine wave." << endl;
+			cout << "2 = Sine wave." << endl;
+			cout << "3 = Incremental." << endl;
+			userchoice = "";
+			while (userchoice.empty()) {
+				getline(cin, userchoice);
+			}
+		}
+
+		if (userchoice == "1") {
+			mixerMode = ColorMixerMode::COSWAVE;
+		} else if (userchoice == "2") {
+			mixerMode = ColorMixerMode::SINWAVE;
+		} else if (userchoice == "3") {
+			mixerMode = ColorMixerMode::INCREMENTAL;
+		}
+
+		cout << endl;
+
+		cout << "What blur method should be used?" << endl;
+		cout << "1 = No blur." << endl;
+		cout << "2 = Sharp pixels with blur." << endl;
+		cout << "3 = Soft pixels with blur." << endl;
+		cout << "4 = Draw lines instead." << endl;
+		userchoice = "";
+		while (userchoice.empty()) {
+			getline(cin, userchoice);
+		}
+		while (userchoice != "1" && userchoice != "2" && userchoice != "3" && userchoice != "4") {
+			cout << userchoice << " is not a valid selection!" << endl;
+			cout << "1 = No blur." << endl;
+			cout << "2 = Sharp pixels with blur." << endl;
+			cout << "3 = Soft pixels with blur." << endl;
+			cout << "4 = Draw lines instead." << endl;
+			userchoice = "";
+			while (userchoice.empty()) {
+				getline(cin, userchoice);
+			}
+		}
+
+		if (userchoice == "1") {
+			transitionMethod = 1;
+		} else if (userchoice == "2") {
+			transitionMethod = 2;
+		} else if (userchoice == "3") {
+			transitionMethod = 3;
+		} else if (userchoice == "4") {
+			transitionMethod = 4;
+		}
+
+		cout << endl;
+
 	}
 
 	/*Use the current system time to seed the rand() function.*/
@@ -47,7 +187,7 @@ int main(int argc, char* argv[]) {
 	  SDL_Renderer, SDL_Texture, and buffer, returns true on success, and false if
 	  any portion fails. This is used in place of a constructor, as constructors are
 	  not able to return values. If screen.init() fails, the program returns 1 and exits.*/
-	if (!screen.init(SDL_WindowFlags(SDL_WINDOW_RESIZABLE))) {
+	if (!screen.init(screenFlags)) {
 		cout << "Error initializing SDL." << endl;
 		return 1;
 	}
@@ -84,17 +224,21 @@ int main(int argc, char* argv[]) {
 		/*Changes the red, green, and blue values that will be used to draw the particles,
 		  using the ColorMixerMode passed to the first parameter and the seed passed to the
 		  second parameter, if applicable.*/
-		mixer.cycleColors(ColorMixerMode::SINWAVE, elapsed);
+		mixer.cycleColors(mixerMode, elapsed);
 
 		/*Draw particles--------------------------------------------------------------------------------------------------------------*/
 
 		/*Sets all pixels in the buffer back to black.*/
-		//screen.clear();
+		if (transitionMethod == 1) {
+			screen.clear();
+		}
 
 		/*Blurs the screen using a box blur. Applying blur at this point blurs the screen
 		  before drawing the new pixels, which results in sharper pixels, that look like
 		  comets. NOT RECOMMENDED FOR HD MODE*/
-		//screen.boxBlur();
+		if (transitionMethod == 2) {
+			screen.boxBlur();
+		}
 
 		/*Creates a const pointer to the array of particles in the swarm and treats them as
 		  const to avoid accidently modifying any of them, or pointing the pointer to something
@@ -140,7 +284,9 @@ int main(int argc, char* argv[]) {
 		/*Blurs the screen using a box blur. Applying blur at this point blurs the screen
 		  after drawing the new pixels, which results in blurier pixels, that look like
 		  embers.*/
-		screen.boxBlur();
+		if (transitionMethod == 3) {
+			screen.boxBlur();
+		}
 
 		/*Draw the screen-------------------------------------------------------------------------------------------------------------*/
 

@@ -2,7 +2,7 @@
 
 namespace Aratorin {
 
-	Screen::Screen() :window(NULL), renderer(NULL), texture(NULL), buffer1(NULL), buffer2(NULL) {}
+	Screen::Screen() :window(NULL), renderer(NULL), texture(NULL), buffer1(NULL), buffer2(NULL), windowFlags(SDL_WINDOW_SHOWN) {}
 
 	int Screen::SCREEN_WIDTH = 800;
 	int Screen::SCREEN_HEIGHT = 600;
@@ -22,6 +22,7 @@ namespace Aratorin {
 
 		/*Original Mode*/
 		window = SDL_CreateWindow("Particle Motion", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, flags);
+		windowFlags = flags;
 
 		if (window == NULL) {
 			SDL_Quit();
@@ -67,6 +68,11 @@ namespace Aratorin {
 		//memset(buffer, 0x00, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
 		clear();
 
+
+		if (windowFlags == SDL_WINDOW_FULLSCREEN_DESKTOP) {
+			SDL_ShowCursor(SDL_DISABLE);
+		}
+
 		return true;
 	}
 
@@ -82,8 +88,15 @@ namespace Aratorin {
 	SDL_Event event;
 	bool Screen::processEvents() {
 		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) {
+			switch (event.type) {
+			case SDL_QUIT:
 				return false;
+			case SDL_MOUSEBUTTONDOWN:
+				if (event.button.button == SDL_BUTTON_LEFT && windowFlags == SDL_WINDOW_FULLSCREEN_DESKTOP) {
+					return false;
+				}
+			default:
+				return true;
 			}
 		}
 		return true;

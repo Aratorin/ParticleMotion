@@ -17,6 +17,7 @@ namespace Aratorin {
 		SDL_Texture* texture;
 		Uint32* buffer1;
 		Uint32* buffer2;
+		SDL_WindowFlags windowFlags;
 
 	public:
 		Screen();
